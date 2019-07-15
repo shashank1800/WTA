@@ -8,10 +8,17 @@
 	{% endif %}
 </head>
 <body>
-	<center><p>Welecome to Mini Amazon</p></center>
+	<center><h2>Welecome to Mini Amazon</h2></center>
 
 	{%if signin%}
-		<p>Welcome</p>
+	<h4>Welcome {{session['username']}}</h4>
+	{%endif%}
+
+	{% if session['c_type']=='buyer' %}
+
+	<p><a href="#">Click here </a> to look at the product</p>
+	{% else %}
+	<p><a href="#">Click here </a> to look at your cart</p>
 	{% endif %}
 
 	{% if title != 'Contact' %}
