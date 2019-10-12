@@ -1,71 +1,38 @@
-{% extends 'layout.html' %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
-{% block body %}
-
-<p> This is the home page!</p>
-
-{% if session %}
-
-<center>
-<p> Welcome {{ session['username']}}! </p>
-<p>you've signed in as a {{ session['c_type'] }}!</p>
-</center>
-
-{% if session['c_type']=='buyer' %}
-<center>
-<p><a href="/products"> click here </a> to look at the products available for sale</p>
-<p><a href="#"> click here </a> to look at your cart</p>
-</center>
-
-{% else %}
-<center>
-	<p>Add Product Below</p>
-<form action="/products" method='POST'>
-	<input type="text" name="name" placeholder="enter product name...">
-	<input type="text" name="description" placeholder="describe your product...">
-	<input type="text" name="price" placeholder="enter product price...">
-	<input type="submit" value="Add product">
-</form>
-
-<p><a href="/products"> click here </a> to look at the products you've added to the store</p>
-</center>
-{% endif %}
-
-{% else %}
-<p>Login!</p>
-<form action="/login" method="POST">
-
-	<input type="text" name="username" placeholder="Enter username..."><br>
-
-	<input type="password" name="password" placeholder="Enter password..."><br>
-
-	<input type="submit" value="login"><br>
-
-</form>
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
 
-<p> Don't have an acount? Sign up!</p>
+    <style type="text/css">
+        .container {
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .login-dark {
+            background-color: #33333d;
+        }
 
-<form action="/signup" method="POST">
+    </style>
+    </head>
+    <body> 
+        <div class="container">
+            <div class="col-4">
+                <div class="login-dark p-3 my-5 shadow-lg rounded">
+                    <div class="pt-3">
+                        <h2 class="text-white ">Signed In</h2>
+                    </div>
 
-
-	<input type="text" name="username" placeholder="enter username...">
-
-	<input type="password" name="password1" placeholder="enter password1...">
-
-	<input type="password" name="password2" placeholder="re-enter password1...">
-
-	<p>Customer Type</p><br>
-	<p>Buyer</p><input type="radio" name="type" value="buyer">
-
-	<p>Seller</p><input type="radio" name="type" value="seller"><br>
-
-	<input type="submit" value="Create Account">
-
-
-</form>
-
-
-{% endif %}
-
-{% endblock body %}
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
