@@ -1,9 +1,9 @@
 import pyrebase
-from flask import Flask,render_template, request, redirect, session
 import os
 
-app = Flask(__name__)
+from flask import Flask,render_template, request, redirect, session
 
+app = Flask(__name__)
 
 config = {
     "apiKey": "AIzaSyDgMvPsK5gW9EZqs4dMRxLxbH5-kKIX0PA",
@@ -31,8 +31,6 @@ def login():
 		password = request.form['password']
 		user = auth.sign_in_with_email_and_password(email, password)
 		return render_template('home.html')
-
-
 	return render_template('login.html')
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -47,8 +45,10 @@ def register():
 			user = auth.refresh(user['refreshToken'])
 			auth.send_email_verification(user['idToken'])
 			return render_template('login.html')
+	
 
 	return render_template('register.html')
+
 
 app.run(debug=True)
 app.do_teardown_appcontext()
