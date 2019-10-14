@@ -1,9 +1,10 @@
 import pyrebase
 import os
 
-from flask import Flask,render_template, request, redirect, session, url_for
+from flask import Flask,render_template, request, redirect, session, url_for, flash
 
 app = Flask(__name__)
+app.secret_key = 'random string'
 
 config = {
     "apiKey": "AIzaSyDgMvPsK5gW9EZqs4dMRxLxbH5-kKIX0PA",
@@ -19,22 +20,28 @@ config = {
 firebase = pyrebase.initialize_app(config)
 auth = firebase.auth()
 
-
 @app.route("/")
 def home():
 	return render_template('login.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-	if (request.method == 'POST'):
-		email = request.form['name']
-		password = request.form['password']
-		user = auth.sign_in_with_email_and_password(email, password)
-		return render_template('home.html')
+
+	try:
+		if (request.method == 'POST'):
+			email = request.form['name']
+			password = request.form['password']
+			user = auth.sign_in_with_email_and_password(email, password)
+			return render_template('home.html')
+
+	except:
+		flash('Something went wrong!!')
+
 	return render_template('login.html')
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+
 	if (request.method == 'POST'):
 		email = request.form['name']
 		password1 = request.form['password']
@@ -45,7 +52,6 @@ def register():
 			user = auth.refresh(user['refreshToken'])
 			auth.send_email_verification(user['idToken'])
 			return render_template('login.html')
-	
 
 	return render_template('register.html')
 
