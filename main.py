@@ -1,7 +1,7 @@
 import pyrebase
 import os
 
-from flask import Flask,render_template, request, redirect, session
+from flask import Flask,render_template, request, redirect, session, url_for
 
 app = Flask(__name__)
 
@@ -48,6 +48,20 @@ def register():
 	
 
 	return render_template('register.html')
+
+@app.route("/forgot_password")
+def forgot_password():
+	return render_template('forgot_password.html')
+
+@app.route("/forgot_form",methods=['GET', 'POST'])
+def forgot_form():
+	if (request.method == 'POST'):
+		email = request.form['name']
+
+		if email!="":
+			auth.send_password_reset_email(email)
+
+	return render_template('login.html')
 
 
 app.run(debug=True)
