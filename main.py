@@ -22,16 +22,18 @@ auth = firebase.auth()
 
 @app.route("/")
 def home():
+	if session.get('email',False):
+		return render_template('home.html')
 	return render_template('login.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-
 	try:
 		if (request.method == 'POST'):
 			email = request.form['name']
 			password = request.form['password']
 			user = auth.sign_in_with_email_and_password(email, password)
+			session['email'] = email
 			return render_template('home.html')
 
 	except:
@@ -51,7 +53,9 @@ def register():
 			user = auth.create_user_with_email_and_password(email, password1)
 			user = auth.refresh(user['refreshToken'])
 			auth.send_email_verification(user['idToken'])
-			return render_template('login.html')
+			user = auth.sign_in_with_email_and_password(email, password1)
+			session['email'] = email
+			return render_template('home.html')
 
 	return render_template('register.html')
 
@@ -69,6 +73,14 @@ def forgot_form():
 
 	return render_template('login.html')
 
+@app.route("/logout")
+def logout():
+	session.pop("email",None)
+	return render_template('login.html')
+
+@app.route("/show_bus_list")
+def show_bus_list():
+	return render_template('show_bus_list.html')
 
 app.run(debug=True)
 app.do_teardown_appcontext()
