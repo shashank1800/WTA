@@ -82,5 +82,10 @@ def logout():
 def show_bus_list():
 	return render_template('show_bus_list.html')
 
+@app.route("/developers")
+def developers():
+	return render_template('developers.html')
+
+
 app.run(debug=True)
 app.do_teardown_appcontext()
