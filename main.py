@@ -19,6 +19,10 @@ config = {
 
 firebase = pyrebase.initialize_app(config)
 auth = firebase.auth()
+database = firebase.database()
+
+db = firebase.database()
+source_destination = ""
 
 @app.route("/")
 def home():
@@ -78,14 +82,23 @@ def logout():
 	session.pop("email",None)
 	return render_template('login.html')
 
-@app.route("/show_bus_list")
+@app.route("/show_bus_list",methods=['GET', 'POST'])
 def show_bus_list():
-	return render_template('show_bus_list.html')
+	if (request.method == 'POST'):
+		source = request.form['source'].lower()
+		destination = request.form['destination'].lower()
+	source_destination = source+"-"+destination
+
+	bus_list = []
+	data = db.child("bus_list").child(source_destination).get()
+	for user in data.each():
+		bus_list.append(user.val())
+	return render_template('show_bus_list.html',bus_list=bus_list)
 
 @app.route("/developers")
 def developers():
 	return render_template('developers.html')
 
 
-app.run(debug=True)
+app.run(debug=False)
 app.do_teardown_appcontext()
