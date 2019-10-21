@@ -22,7 +22,9 @@ auth = firebase.auth()
 database = firebase.database()
 
 db = firebase.database()
+
 source_destination = ""
+all_bus_list = []
 
 @app.route("/")
 def home():
@@ -87,17 +89,38 @@ def show_bus_list():
 	if (request.method == 'POST'):
 		source = request.form['source'].lower()
 		destination = request.form['destination'].lower()
+
 	source_destination = source+"-"+destination
 
-	bus_list = []
-	data = db.child("bus_list").child(source_destination).get()
-	for user in data.each():
-		bus_list.append(user.val())
-	return render_template('show_bus_list.html',bus_list=bus_list)
+	date_wise = dict()
+	root_wise = dict()
+	all_bus_list = []
+
+	data1 = db.child("date-wise").child("22-10-2019").child(source_destination).get()
+	for user in data1.each():
+		date_wise[user.key()] = user.val()
+	data2 = db.child("bus_list").child(source_destination).get()
+	for user in data2.each():
+		root_wise[user.key()] = user.val()
+
+
+	for bus in date_wise:
+		full_bus_detail = dict()
+		for opt in date_wise[bus]:
+			full_bus_detail[opt] = date_wise[bus][opt]
+		for opt in root_wise[bus]:
+			full_bus_detail[opt] = root_wise[bus][opt]
+		all_bus_list.append(full_bus_detail)
+
+	return render_template('show_bus_list.html',all_bus_list=all_bus_list)
 
 @app.route("/developers")
 def developers():
 	return render_template('developers.html')
+
+@app.route("/show_seats", methods = ['GET','POST'])
+def show_seats():
+	return render_template('home.html')
 
 
 app.run(debug=False)
